@@ -1,0 +1,17 @@
+# EventMobi Enginnering
+# Docker compose for local development 
+# Version: 2020.06.12
+# 
+
+# If you are building your for local developement, please uncoment "volume" in order 
+# to have your local changes in the container as well
+
+version: "3.8"
+services:
+  web:
+    stdin_open: true
+    tty: true
+    container_name: web
+    environment:
+      - CHOKIDAR_USEPOLLING
+      - ENVIRONMENT

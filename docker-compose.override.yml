@@ -1,0 +1,55 @@
+# EventMobi Enginnering
+# Docker compose for local development 
+# Version: 2020.06.12
+# 
+
+version: "3.8"
+services:
+  database:
+    image: postgres:alpine
+    restart: always
+    container_name: pg_container
+    ports:
+      - ${POSTGRES_PORT}:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_SCHEMA
+
+  app:
+    image: 275468266209.dkr.ecr.us-east-1.amazonaws.com/eventmobi/app:latest
+    restart: on-failure
+    ports:
+      - 5000:5000
+    depends_on:
+      - database
+    environment:
+      - FLASK_RUN_HOST
+      - FLASK_ENV
+      - ENVIRONMENT
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+      - POSTGRES_HOST
+      - POSTGRES_PORT
+      - POSTGRES_SCHEMA
+
+  web:
+    stdin_open: true
+    tty: true
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    restart: on-failure
+    ports:
+      - 3000:3000
+    volumes:
+      - '.:/app'
+      - '/app/node_modules'
+
+volumes:
+  pgdata:
+
