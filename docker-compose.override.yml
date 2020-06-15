@@ -20,7 +20,8 @@ services:
       - POSTGRES_SCHEMA
 
   app:
-    image: 275468266209.dkr.ecr.us-east-1.amazonaws.com/eventmobi/app:latest
+    # image: ${AWS_ECR_REPOSITORY}/eventmobi/app:latest
+    build: https://${GITHUB_ACCESS_TOKEN}@github.com/alka2/app.git
     restart: on-failure
     ports:
       - 5000:5000
